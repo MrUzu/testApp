@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!--
+     * Copyright (c) 2012, Intel Corporation
+     * File revision: 04 October 2012
+     * Please see http://software.intel.com/html5/license/samples 
+     * and the included README.md file for license terms and conditions.
+     -->
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+    <title>Where Is My Car?</title>
+    
+    <!-- for debugging, all apps should include a cordova.js file.  
+         Ultimately, this file will be replaced by PhoneGapBuild by the correct cordova.js file for that platform.
+     -->
+    <script src="cordova.js"></script>
+
+    <!-- If you want an app to be deployable both as a web app AND as a PhoneGap app, then consider using pg_event_assist.js
+         It will let you use the deviceready event for your app initialization.  deviceready will then be fired both 
+         in the browser and when running under PhoneGap. This can make app initialization easier.
+    -->
+    <script src="pg_event_assist.js"></script>
+    
+    <!-- when mobile let's size this page down to the phone/tablet
+         for more information: https://developer.mozilla.org/en-US/docs/Mobile/Viewport_meta_tag
+         
+         since this page design is fairly liquid, we aren't going to set a viewport width or height, 
+         not even to the device-width/height.  (ie width=device-width, height=device-height )
+    -->
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0" />
+    
+    <!-- does this app run in full screen mode?  yes. 
+         see http://developer.apple.com/library/safari/#documentation/AppleApplications/Reference/SafariHTMLRef/Articles/MetaTags.html
+         for more information 
+         NOTE: for web apps, full screen mode only works when the page has been added to the home screen.
+               there are tricks to make it do this even in mobile safari.  -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    
+    <!-- icon and startup screen -->
+    <link rel="apple-touch-icon" href="images/small-car-icon.png"/>
+    <!-- <link rel="apple-touch-startup-image" href="images/startup.png" /> -->
+    
+    <!-- some minimal CSS to help us look like an iOS mobile app.
+         if you want an app that looks native on each mobile platform, 
+         consider using jQueryMobile, KendoUI Mobile, or Sencha Touch -->
+    <link rel="stylesheet" type="text/css" media="all" href="css/ios_styles.css" />
+    <!-- styles for just our app -->
+    <link rel="stylesheet" type="text/css" media="all" href="css/app_styles.css" />
+    
+    <script src="js/app.js"></script>
+    <script>
+        /* To keep things simple, we want exactly one initialization routine.
+            the pg_event_assist.js that we are using in this project will insure that
+            the PhoneGap deviceready event fires even if running as a web app in the browser.
+        */
+        function onDeviceReady()
+        {
+            init_app(); 
+        }
+        document.addEventListener("deviceready", onDeviceReady, false); 
+        
+        
+        
+        function init_app()
+        {
+           
+            setup_button_events(); // see app.js
+            display_last_location(get_last_location());   //see app.js
+            
+            window.addEventListener("resize", setup_visualizer, false); //if the browser window is resized
+            window.addEventListener("orientationchange", setup_visualizer , false); //if the device has its orientation flipped
+        
+            //is this phonegap or web?  If PhoneGap, extra welcome for you
+            if(typeof device !== "undefined") // this global variable has the device capabilities on it (device.name, device.platform, device.uuid, etc.)
+            {                                 // and is only available when we are running under PhoneGap (or the emulator)
+                var welcome = byId("phonegap_welcome");
+                welcome.style.display = "block"; //make it visible.
+                //and vibrate phone
+                if(typeof(navigator.notification) !== "undefined")
+                {
+                    navigator.notification.vibrate(200);
+                }
+            }
+        }
+    </script>
+    
+   </head>
+   <body>
+   <!-- both pages for this app are simply divs.  
+        We adjust the .style.display of each to toggle visibility -->
+    <div id="startpage">
+        <div class="header"><h1>Where Is My Car?</h1></div>
+        <div><p>This app will run as either a regular in-browser web app,
+                or can be built with PhoneGap to run natively.</p></div>
+        <div id="phonegap_welcome">Running With PhoneGap</div>
+        <div class="Button" id="remember-btn">Remember This Location</div>
+        <p></p>
+        <div class="Button" id="find-btn">Find Last Location</div>
+        <p class="location">Last Location: <span id="last-stored-location">none</span></p>
+    </div>
+    
+    <div id="findpage">
+        <div class="header">
+            <div class="Button back left" id="back-btn">Back</div>
+            <h1> Finding Location</h1>
+        </div>
+        <p class="location">Last Location: <span id="last-location">none</span></p>
+        <p class="location">Current Location: <span id="current-location">unknown</span></p>
+        <p class="location">Distance: <span id="distance">not determined</span></p>
+        <p id="error"></p>
+        <p id="north">north</p>
+        <div id="visualizer">
+            <div id="car"></div>
+            <div id="user"></div>
+        </div>
+    </div>
+    
+   </body>
+</html>

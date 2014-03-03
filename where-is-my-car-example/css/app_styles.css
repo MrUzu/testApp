@@ -1,0 +1,35 @@
+body { font-family:sans-serif; }
+
+p { margin: 15px 10px; }
+
+.location {font-size:1em; line-height:1.5em; }
+.location span{ font-family:monospace;  font-size:1.1em;  }
+
+#findpage .location {font-size:9px; }
+#findpage .location span{ white-space:nowrap; }
+
+.back{ width:40px; }
+
+#error{ color:red; text-align:center; font-weight:bold; padding:5px; }
+#north{ background-color:black; color:white; text-align:center; padding:2px; margin:0px; }
+
+#find-btn, #findpage{ display:none; }
+
+#phonegap_welcome{ color:green; text-align:center; font-style:italic; padding:3px; display:none; }
+
+/*
+    http://www.fatcow.com/free-icons
+*/
+#car { background-image: url('../images/car.png'); 
+       width:32px; height:32px; position:absolute; }
+
+
+/*
+    http://www.fatcow.com/free-icons
+*/
+#user { background-image: url('../images/user_silhouette.png'); 
+        width:32px; height:32px; position:absolute; }
+        
+        
+        
+#visualizer{ background-color:#DDF; position:relative;  }
