@@ -117,12 +117,16 @@ function setup_button_events()
 function rememberf()
 {
     log("remember button clicked");
-    navigator.geolocation.getCurrentPosition(remember_this, 
+    var nav = navigator.geolocation.getCurrentPosition(remember_this/*, 
              get_error_callback("error when retrieving position"), 
-             geolocation_options_constant); 
+             geolocation_options_constant*/); 
+    log("position launched");
+    log( nav );
 }
-function remember_this(position)
+var remember_this =  function(position)
 {
+    log("OK position passed");
+	log(position);
     store_last_location(position);
     //display
     display_last_location(get_last_location());
